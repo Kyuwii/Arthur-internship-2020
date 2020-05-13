@@ -2,7 +2,7 @@
 import math
 
 def defineInputs():
-    a = 6#input("Input float number a : ")
+    a = 85.125#input("Input float number a : ")
     b = 5#input("Input float number b : ")
     return a, b
 
@@ -11,6 +11,18 @@ def findSign(number):
         return 0
     else:
         return 1 
+
+def convertDecimal(binary):
+    results = 0
+    for i in range(0, len(binary)):
+        results = results + binary[len(binary) - i - 1] * pow(2, i)
+    return results
+
+def convertFloatDecimal(binary):
+    results = 0
+    for i in range(0, len(binary)):
+        results = results + binary[i] * pow(2, -i - 1)
+    return results
 
 def convertBinary(dividend):
     results = []

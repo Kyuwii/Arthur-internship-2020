@@ -1,8 +1,5 @@
 import floatToIEEE754
 
-# WORK IN PROGRESS
-# warning in this version the normalize for the exponent is missing
-
 def findPowerOf2(number):
     size = len(number)
     result = 0
@@ -50,18 +47,95 @@ def complementTwo(number):
             print("Error")
     return additionBinary(results, complement)
 
+def transformInInteger(number):
+    result = 0
+    for i in range(1, 9):
+        result = result + number[i] * pow(10, 8 - i)
+    return result
+
+def addExponent(number):
+    exponent = []
+    for i in range(1, 9):
+        exponent.insert(i - 1, number[i])
+    addition = [1]
+    newExponent = additionBinary(exponent, addition)
+    for i in range(2, 9):
+        number[i] = newExponent[i - 1]
+    return number
+
+def shiftBitMantissa(number):
+    number.pop()
+    number.insert(9, 0)
+    return number
+
+def alignExponent(numberA, numberB):
+    if transformInInteger(numberA) == transformInInteger(numberB):
+        return numberA, numberB
+    elif transformInInteger(numberA) < transformInInteger(numberB):
+        while transformInInteger(numberA) < transformInInteger(numberB):
+            addExponent(numberA)
+            shiftBitMantissa(numberA)
+    else:
+        while transformInInteger(numberB) < transformInInteger(numberA):
+            addExponent(numberB)
+            shiftBitMantissa(numberB)
+    return numberA, numberB
+
+def getMantissa(number):
+    mantissa = []
+    for i in range(9, 32):
+        mantissa.insert(i - 9, number[i])
+    return mantissa
+
+def getExponent(number):
+    exponent = []
+    for i in range(1, 9):
+        exponent.insert(i - 1, number[i])
+    return exponent
+
+def IEEE754ToFloat(number):
+    binaryExponent = getExponent(number)
+    exponent = floatToIEEE754.convertDecimal(binaryExponent)
+    shift = exponent - 127
+    mantissa = [1]
+    for i in range(0, shift):
+        mantissa.append(number[i + 9])
+    result = floatToIEEE754.convertDecimal(mantissa)
+    decimal = []
+    for i in range(9 + shift, 32):
+        decimal.append(number[i])
+    result = result + floatToIEEE754.convertFloatDecimal(decimal)
+    if number[0] == 0:
+        return result
+    else:
+        return -result
+
 def subtractBinaries():
     inputs = floatToIEEE754.convertIEE754()
 
     numberA = inputs[0]
     numberB = inputs[1]
 
-    # TODO normalize the exponent for the smaller exponent of the two numbers 
-    
-    print(numberA, numberB)
-    negativeNumberB = complementTwo(numberB)
+    print("number A = ", numberA, "in decimal =", IEEE754ToFloat(numberA))
+    print("number B = ", numberB, "in decimal =", IEEE754ToFloat(numberB))
 
-    result = additionBinary(numberA, negativeNumberB)
-    return result
+    alignExponent(numberA, numberB)
 
-print(subtractBinaries())
+    print("number A = ", numberA, "in decimal =", IEEE754ToFloat(numberA))
+    print("number B = ", numberB, "in decimal =", IEEE754ToFloat(numberB))
+
+    mantissaA = getMantissa(numberA)
+    mantissaB = getMantissa(numberB)
+    exponent = getExponent(numberA)
+    negativeNumberB = complementTwo(mantissaB)
+
+    result = additionBinary(mantissaA, negativeNumberB)
+
+    floatToIEEE754.appendList(exponent, result)
+
+    exponent.insert(0, 0)
+
+    return exponent
+
+result = subtractBinaries()
+print("results = ", result, "in decimal =", IEEE754ToFloat(result))
