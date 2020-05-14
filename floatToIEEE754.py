@@ -126,3 +126,10 @@ def convertIEE754():
 
     return A, B
 
+def prettyPrint(ieee754num):
+    sign, exp, mant = ieee754num[0], ieee754num[1:9], ieee754num[9:]
+    exp = ''.join(map(str, exp))
+    mant = ''.join(map(str, mant))
+
+    pretty = '%s | %s | %s' % (sign, exp, mant)
+    return pretty

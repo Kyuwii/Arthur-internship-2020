@@ -69,17 +69,22 @@ def shiftBitMantissa(number):
     return number
 
 def alignExponent(numberA, numberB):
-    if transformInInteger(numberA) == transformInInteger(numberB):
-        return numberA, numberB
-    elif transformInInteger(numberA) < transformInInteger(numberB):
-        while transformInInteger(numberA) < transformInInteger(numberB):
-            addExponent(numberA)
-            shiftBitMantissa(numberA)
-    else:
-        while transformInInteger(numberB) < transformInInteger(numberA):
-            addExponent(numberB)
-            shiftBitMantissa(numberB)
-    return numberA, numberB
+    signA, expA, mantA = numberA[0], numberA[1:9], numberA[9:]
+    signB, expB, mantB = numberB[0], numberB[1:9], numberB[9:]
+
+    # TODO: implement addition FPU algorithm using the exp, mant variables above
+    
+    # if transformInInteger(numberA) == transformInInteger(numberB):
+    #     return numberA, numberB
+    # elif transformInInteger(numberA) < transformInInteger(numberB):
+    #     while transformInInteger(numberA) < transformInInteger(numberB):
+    #         addExponent(numberA)
+    #         shiftBitMantissa(numberA)
+    # else:
+    #     while transformInInteger(numberB) < transformInInteger(numberA):
+    #         addExponent(numberB)
+    #         shiftBitMantissa(numberB)
+    # return numberA, numberB
 
 def getMantissa(number):
     mantissa = []
@@ -116,13 +121,13 @@ def subtractBinaries():
     numberA = inputs[0]
     numberB = inputs[1]
 
-    print("number A = ", numberA, "in decimal =", IEEE754ToFloat(numberA))
-    print("number B = ", numberB, "in decimal =", IEEE754ToFloat(numberB))
+    print("number A = ", floatToIEEE754.prettyPrint(numberA), "in decimal =", IEEE754ToFloat(numberA))
+    print("number B = ", floatToIEEE754.prettyPrint(numberB), "in decimal =", IEEE754ToFloat(numberB))
 
     alignExponent(numberA, numberB)
 
-    print("number A = ", numberA, "in decimal =", IEEE754ToFloat(numberA))
-    print("number B = ", numberB, "in decimal =", IEEE754ToFloat(numberB))
+    print("number A = ", floatToIEEE754.prettyPrint(numberA), "in decimal =", IEEE754ToFloat(numberA))
+    print("number B = ", floatToIEEE754.prettyPrint(numberB), "in decimal =", IEEE754ToFloat(numberB))
 
     mantissaA = getMantissa(numberA)
     mantissaB = getMantissa(numberB)
@@ -138,4 +143,4 @@ def subtractBinaries():
     return exponent
 
 result = subtractBinaries()
-print("results = ", result, "in decimal =", IEEE754ToFloat(result))
+print("results  = ", floatToIEEE754.prettyPrint(result), "in decimal =", IEEE754ToFloat(result))
