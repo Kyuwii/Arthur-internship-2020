@@ -1,4 +1,4 @@
-import floatToIEEE754
+import floatToIEEE754.py
 
 def findPowerOf2(number):
     size = len(number)
@@ -21,15 +21,6 @@ def additionBinary(numberA, numberB):
         fillWithZeroStart(numberA, len(numberB) - len(numberA))
     else:
         fillWithZeroStart(numberB, len(numberA) - len(numberB))
-    # if findPowerOf2(numberA) == findPowerOf2(numberB):
-    #     pass
-    # elif findPowerOf2(numberA) < findPowerOf2(numberB):
-    #     fillWithZeroStart(numberA, findPowerOf2(numberB) - len(numberA))
-    #     fillWithZeroStart(numberB, findPowerOf2(numberB) - len(numberB))
-    # else:
-    #     fillWithZeroStart(numberB, findPowerOf2(numberA) - len(numberB))
-    #     fillWithZeroStart(numberA, findPowerOf2(numberA) - len(numberA))
-
     results = []
     carry = 0
     for i in range(0, len(numberA)):
@@ -139,8 +130,8 @@ def subtractBinaries():
     numberA = inputs[0]
     numberB = inputs[1]
 
-    print("number A = ", numberA, "in decimal =", IEEE754ToFloat(numberA))
-    print("number B = ", numberB, "in decimal =", IEEE754ToFloat(numberB))
+    print("number A = ", floatToIEEE754.prettyPrint(numberA), "in decimal =", IEEE754ToFloat(numberA))
+    print("number B = ", floatToIEEE754.prettyPrint(numberB), "in decimal =", IEEE754ToFloat(numberB))
 
     numbers = alignExponent(numberA, numberB)
   
