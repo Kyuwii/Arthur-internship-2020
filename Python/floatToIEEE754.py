@@ -2,8 +2,8 @@
 import math
 
 def defineInputs():
-    a = 85.125#input("Input float number a : ")
-    b = 5#input("Input float number b : ")
+    a = 10#input("Input float number a : ")
+    b = 5.5#input("Input float number b : ")
     return a, b
 
 def findSign(number):
