@@ -53,5 +53,4 @@ print("Challenger score = ", model.score(challengerInputs, challengerTarget))
 print("Grand Master score = ", model.score(grandMasterInputs, grandMasterTarget))
 print("Master score = ", model.score(masterInputs, masterTarget))
 
-
 # %%
