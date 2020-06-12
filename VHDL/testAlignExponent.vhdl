@@ -11,8 +11,8 @@ entity testSubtractAdder is
 end testSubtractAdder;
 
 architecture tb of testSubtractAdder is
-    signal A, B: std_logic_vector(n-1 downto 0);
-    signal result: std_logic_vector(n-1 downto 0);
+    signal A, B, N_B: std_logic_vector(n-1 downto 0);
+    signal C, D, N_D: std_logic_vector(7 downto 0);
     file buffer_input: text;
     file buffer_output: text;
 
@@ -20,11 +20,12 @@ begin
 tb1 : process
     variable read_line : line;
     variable write_line : line;
-    variable buffer_A, buffer_B, buffer_result: std_logic_vector(n-1 downto 0);
+    variable buffer_A, buffer_B, buffer_N_B: std_logic_vector(n-1 downto 0);
+    variable buffer_C, buffer_D, buffer_N_D: std_logic_vector(7 downto 0); 
     variable buffer_space : character;
     
     begin
-        file_open(buffer_input, "../Files/inputsSubtractAdder.txt", read_mode);
+        file_open(buffer_input, "../Files/inputsAlignExponent.txt", read_mode);
         while not endfile(buffer_input) loop
             readline(buffer_input, read_line);
             
@@ -34,11 +35,23 @@ tb1 : process
             read(read_line, buffer_B);
             read(read_line, buffer_space);
 
-            read(read_line, buffer_result);
+            read(read_line, buffer_N_B);
+            read(read_line, buffer_space);
+
+            read(read_line, buffer_C);
+            read(read_line, buffer_space);
+
+            read(read_line, buffer_D);
+            read(read_line, buffer_space);
+
+            read(read_line, buffer_N_D);
 
             A <= buffer_A;
             B <= buffer_B;
-            result <= buffer_result;
+            N_B <= buffer_N_B;
+            C <= buffer_C;
+            D <= buffer_D;
+            N_D <= buffer_N_D;
 
             wait for 20 ns;
     
@@ -46,19 +59,22 @@ tb1 : process
 
         file_close(buffer_input);
 
-        file_open(buffer_output, "..Files/outputsSubtractAdder.txt", write_mode);
+        file_open(buffer_output, "..Files/outputsAlignExponent.txt", write_mode);
 
         write(write_line, string'("Values"));
         writeline(buffer_output, write_line);
 
         write(write_line, string'("Number A = "));
+        write(write_line, C);
         write(write_line, A);
 
         write(write_line, string'(" Number B = "));
+        write(write_line, D);
         write(write_line, B);
-
+        
         write(write_line, string'(" Result = "));
-        write(write_line, result);
+        write(write_line, N_D);
+        write(write_line, N_B);
 
         writeline(buffer_output, write_line);
 

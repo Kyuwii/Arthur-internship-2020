@@ -16,11 +16,13 @@ architecture behavior of alignResult is
 begin
     process
     begin
-        l_n: for i in 0 to n loop
-            N_B(i) <= B(i+1); 
-        end loop l_n;
+        N_B <= B(n-1 downto 0);
 
-        wait for 100 ns;
+        l_size: for i in 0 to n loop
+            if N_B(n-1) = '0' then
+                N_B <= N_B(n-1 downto 0) & '0';
+            end if;
+        end loop l_size;
         RES <= A & C & N_B;
     end process;
 

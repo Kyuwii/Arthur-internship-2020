@@ -14,7 +14,7 @@ generic(n: integer:=23);
 end alignExpo;
 
 architecture behavior of alignExpo is
-    signal size: std_logic_vector(7 downto 0);
+    signal size: std_logic_vector(8 downto 0);
     signal one: std_logic_vector(7 downto 0):="00000001";
     signal j: integer:=0;
     signal g: integer:=0;

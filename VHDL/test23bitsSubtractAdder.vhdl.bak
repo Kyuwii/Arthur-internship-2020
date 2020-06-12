@@ -54,10 +54,10 @@ tb1 : process
         write(write_line, string'("Number A = "));
         write(write_line, A);
 
-        write(write_line, string'(" Number B = "));
+        write(write_line, string(" Number B = "));
         write(write_line, B);
 
-        write(write_line, string'(" Result = "));
+        write(write_line, string(" Result = "));
         write(write_line, result);
 
         writeline(buffer_output, write_line);

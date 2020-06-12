@@ -6,7 +6,7 @@ entity subtractAdder is
 generic(n: integer:=23);
     port(A: in std_logic_vector(n-1 downto 0);
          B: in std_logic_vector(n-1 downto 0);
-         result: out std_logic_vector(n downto 0)
+         result: out std_logic_vector(n-1 downto 0)
     );
 end subtractAdder;
 
