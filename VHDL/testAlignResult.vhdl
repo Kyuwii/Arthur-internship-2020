@@ -6,11 +6,20 @@ use ieee.std_logic_textio.all;
 library std;
 use std.textio.all;
 
-entity testSubtractAdder is
+entity testAlignResult is
     generic(n: integer:=23);
-end testSubtractAdder;
+end testAlignResult;
 
-architecture tb of testSubtractAdder is
+architecture tb of testAlignResult is
+    component alignResult
+    generic(n: integer:=23);
+        port(A: in std_logic;
+             B: in std_logic_vector(n downto 0);
+             C: in std_logic_vector(7 downto 0);
+             RES: out std_logic_vector(n + 8 downto 0)
+        );
+    end component;
+
     signal A : std_logic;
     signal B : std_logic_vector(n downto 0);
     signal C : std_logic_vector(7 downto 0);
@@ -19,6 +28,8 @@ architecture tb of testSubtractAdder is
     file buffer_output: text;
 
 begin
+    design : alignResult port map(A => A, B => B, C => C, RES => RES);
+    
 tb1 : process
     variable read_line : line;
     variable write_line : line;
@@ -30,6 +41,7 @@ tb1 : process
     
     begin
         file_open(buffer_input, "../Files/inputsAlignResult.txt", read_mode);
+        A <= '1';
         while not endfile(buffer_input) loop
             readline(buffer_input, read_line);
             
@@ -44,7 +56,7 @@ tb1 : process
 
             read(read_line, buffer_RES);
 
-            A <= buffer_A;
+            A <= '1';
             B <= buffer_B;
             C <= buffer_C;
             RES <= buffer_RES;
@@ -55,7 +67,7 @@ tb1 : process
 
         file_close(buffer_input);
 
-        file_open(buffer_output, "..Files/outputsAlignResult.txt", write_mode);
+        file_open(buffer_output, "../Files/outputsAlignResult.txt", write_mode);
 
         write(write_line, string'("Values"));
         writeline(buffer_output, write_line);

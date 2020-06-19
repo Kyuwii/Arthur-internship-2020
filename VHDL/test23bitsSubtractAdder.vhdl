@@ -46,7 +46,7 @@ tb1 : process
 
         file_close(buffer_input);
 
-        file_open(buffer_output, "..Files/outputsSubtractAdder.txt", write_mode);
+        file_open(buffer_output, "../Files/outputsSubtractAdder.txt", write_mode);
 
         write(write_line, string'("Values"));
         writeline(buffer_output, write_line);

@@ -23,10 +23,11 @@ tb1 : process
     variable buffer_A, buffer_B, buffer_N_B: std_logic_vector(n-1 downto 0);
     variable buffer_C, buffer_D, buffer_N_D: std_logic_vector(7 downto 0); 
     variable buffer_space : character;
+    variable i : integer := 0;
     
     begin
         file_open(buffer_input, "../Files/inputsAlignExponent.txt", read_mode);
-        while not endfile(buffer_input) loop
+        for i in 0 to 1 loop
             readline(buffer_input, read_line);
             
             read(read_line, buffer_A);
@@ -59,7 +60,7 @@ tb1 : process
 
         file_close(buffer_input);
 
-        file_open(buffer_output, "..Files/outputsAlignExponent.txt", write_mode);
+        file_open(buffer_output, "../Files/outputsAlignExponent.txt", write_mode);
 
         write(write_line, string'("Values"));
         writeline(buffer_output, write_line);

@@ -20,7 +20,7 @@ begin
 
         l_size: for i in 0 to n loop
             if N_B(n-1) = '0' then
-                N_B <= N_B(n-1 downto 0) & '0';
+                N_B <= N_B(n-2 downto 0) & '0';
             end if;
         end loop l_size;
         RES <= A & C & N_B;
