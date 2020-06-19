@@ -1,50 +1,51 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.std_logic_textio.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.std_logic_textio.ALL;
 
-library std;
-use std.textio.all;
+LIBRARY std;
+USE std.textio.ALL;
 
-entity testAlignResult is
-    generic(n: integer:=23);
-end testAlignResult;
+ENTITY testAlignResult IS
+    GENERIC (n : INTEGER := 23);
+END testAlignResult;
 
-architecture tb of testAlignResult is
-    component alignResult
-    generic(n: integer:=23);
-        port(A: in std_logic;
-             B: in std_logic_vector(n downto 0);
-             C: in std_logic_vector(7 downto 0);
-             RES: out std_logic_vector(n + 8 downto 0)
+ARCHITECTURE tb OF testAlignResult IS
+    COMPONENT alignResult
+        GENERIC (n : INTEGER := 23);
+        PORT (
+            A : IN std_logic;
+            B : IN std_logic_vector(n DOWNTO 0);
+            C : IN std_logic_vector(7 DOWNTO 0);
+            RES : OUT std_logic_vector(n + 8 DOWNTO 0)
         );
-    end component;
+    END COMPONENT;
 
-    signal A : std_logic;
-    signal B : std_logic_vector(n downto 0);
-    signal C : std_logic_vector(7 downto 0);
-    signal RES : std_logic_vector(n + 8 downto 0);
-    file buffer_input: text;
-    file buffer_output: text;
+    SIGNAL A : std_logic;
+    SIGNAL B : std_logic_vector(n DOWNTO 0);
+    SIGNAL C : std_logic_vector(7 DOWNTO 0);
+    SIGNAL RES : std_logic_vector(n + 8 DOWNTO 0);
+    FILE buffer_input : text;
+    FILE buffer_output : text;
 
-begin
-    design : alignResult port map(A => A, B => B, C => C, RES => RES);
-    
-tb1 : process
-    variable read_line : line;
-    variable write_line : line;
-    variable buffer_A : std_logic;
-    variable buffer_B : std_logic_vector(n downto 0);
-    variable buffer_C : std_logic_vector(7 downto 0);
-    variable buffer_RES : std_logic_vector(n + 8 downto 0);
-    variable buffer_space : character;
-    
-    begin
+BEGIN
+    design : alignResult PORT MAP(A => A, B => B, C => C, RES => RES);
+
+    tb1 : PROCESS
+        VARIABLE read_line : line;
+        VARIABLE write_line : line;
+        VARIABLE buffer_A : std_logic;
+        VARIABLE buffer_B : std_logic_vector(n DOWNTO 0);
+        VARIABLE buffer_C : std_logic_vector(7 DOWNTO 0);
+        VARIABLE buffer_RES : std_logic_vector(n + 8 DOWNTO 0);
+        VARIABLE buffer_space : CHARACTER;
+
+    BEGIN
         file_open(buffer_input, "../Files/inputsAlignResult.txt", read_mode);
         A <= '1';
-        while not endfile(buffer_input) loop
+        WHILE NOT endfile(buffer_input) LOOP
             readline(buffer_input, read_line);
-            
+
             read(read_line, buffer_A);
             read(read_line, buffer_space);
 
@@ -61,24 +62,24 @@ tb1 : process
             C <= buffer_C;
             RES <= buffer_RES;
 
-            wait for 20 ns;
-    
-        end loop;
+            WAIT FOR 20 ns;
+
+        END LOOP;
 
         file_close(buffer_input);
 
         file_open(buffer_output, "../Files/outputsAlignResult.txt", write_mode);
 
-        write(write_line, string'("Values"));
+        write(write_line, STRING'("Values"));
         writeline(buffer_output, write_line);
-        
-        write(write_line, string'(" Result = "));
+
+        write(write_line, STRING'(" Result = "));
         write(write_line, RES);
 
         writeline(buffer_output, write_line);
 
         file_close(buffer_output);
-        wait;
+        WAIT;
 
-    end process;
-end tb;
+    END PROCESS;
+END tb;
