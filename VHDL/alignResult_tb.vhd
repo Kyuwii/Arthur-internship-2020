@@ -25,21 +25,21 @@ BEGIN
 
     UTT : alignResult
     PORT MAP(
-        C_sign_result <= S_sign_result,
-        C_mantissa_result <= S_mantissa_result,
-        C_exponent_result <= S_exponent_result,
-        C_result <= S_result
+        C_sign_result => S_sign_result,
+        C_mantissa_result => S_mantissa_result,
+        C_exponent_result => S_exponent_result,
+        C_result => S_result
     );
 
     TB : PROCESS
     BEGIN
         S_sign_result <= '0';
-        S_mantissa_result <= (22 DOWNTO 0 => '1');
+        S_mantissa_result <= "01001111111111111111111";
         S_exponent_result <= "10000001";
 
         WAIT FOR 20 ns;
 
-        ASSERT(S_result = "01000000111111111111111111111111")
+        ASSERT(S_result = "01000001010011111111111111111110")
         REPORT "test failed" SEVERITY error;
     END PROCESS;
 END tb;

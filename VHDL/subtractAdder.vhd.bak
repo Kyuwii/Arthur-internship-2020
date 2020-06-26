@@ -17,8 +17,8 @@ ARCHITECTURE behavior OF subtractAdder IS
 BEGIN
     operation <= C_mantissa_adder_A(n - 1) XOR C_mantissa_adder_B(n - 1); 
     WITH operation SELECT
-        C_mantissa_adder_result <= (C_mantissa_adder_A(n - 1) & C_mantissa_adder_A) - (C_mantissa_adder_B(n - 1) & C_mantissa_adder_B) WHEN '0',
-        (C_mantissa_adder_A(n - 1) & C_mantissa_adder_A) + (C_mantissa_adder_B(n - 1) & C_mantissa_adder_B) WHEN '1',
+        C_mantissa_adder_result <= ('0' & C_mantissa_adder_A) - ('0' & C_mantissa_adder_B) WHEN '0',
+        ('0' & C_mantissa_adder_A) + ('0' & C_mantissa_adder_B) WHEN '1',
         (OTHERS => '0') WHEN OTHERS;
         
 END behavior;

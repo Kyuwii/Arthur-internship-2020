@@ -7,7 +7,6 @@ END alignExpo_tb;
 
 ARCHITECTURE tb OF alignExpo_tb IS
     COMPONENT alignExpo
-        GENERIC (n : INTEGER := 23);
         PORT (
             C_mantissa_expo_A : IN std_logic_vector(22 DOWNTO 0);
             C_mantissa_expo_B : IN std_logic_vector(22 DOWNTO 0);
@@ -44,8 +43,6 @@ BEGIN
 
         S_exponent_expo_A <= "10000110";
         S_exponent_expo_B <= "10000100";
-        
-        WAIT FOR 20 ns;
 
         ASSERT(S_exponent_expo_result = "10000110")
         REPORT "test failed" SEVERITY error;

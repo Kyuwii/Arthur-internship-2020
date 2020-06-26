@@ -22,14 +22,15 @@ ARCHITECTURE behavior OF top IS
     END COMPONENT;
 
     COMPONENT alignExpo
-        PORT (
-            C_mantissa_expo_A : IN std_logic_vector(22 DOWNTO 0);
-            C_mantissa_expo_B : IN std_logic_vector(22 DOWNTO 0);
-            C_exponent_expo_A : IN std_logic_vector(7 DOWNTO 0);
-            C_exponent_expo_B : IN std_logic_vector(7 DOWNTO 0);
-            C_mantissa_expo_result : OUT std_logic_vector(22 DOWNTO 0);
-            C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0)
-        );
+    GENERIC (n : INTEGER := 23);
+    PORT (
+        C_mantissa_expo_A : IN std_logic_vector(22 DOWNTO 0);
+        C_mantissa_expo_B : IN std_logic_vector(22 DOWNTO 0);
+        C_exponent_expo_A : IN std_logic_vector(7 DOWNTO 0);
+        C_exponent_expo_B : IN std_logic_vector(7 DOWNTO 0);
+        C_mantissa_expo_result : OUT std_logic_vector(22 DOWNTO 0);
+        C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0)
+    );
     END COMPONENT;
 
     COMPONENT alignResult
@@ -41,6 +42,7 @@ ARCHITECTURE behavior OF top IS
         );
     END COMPONENT;
 
+    SIGNAL S_Reg_Input_A, S_Reg_Input : std_logic_vector()
     SIGNAL S_mantissa_expo_A, S_mantissa_expo_B : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_A, S_exponent_expo_B : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_mantissa_adder_A : std_logic_vector(22 DOWNTO 0);
@@ -53,6 +55,9 @@ ARCHITECTURE behavior OF top IS
 BEGIN
 
     algExp : alignExpo
+    GENERIC MAP (
+        n => 23
+    );
     PORT MAP(
         C_mantissa_expo_A => S_mantissa_expo_A,
         C_mantissa_expo_B => S_mantissa_expo_B,
@@ -80,31 +85,23 @@ BEGIN
     PROCESS (clock)
     BEGIN
         IF (clock'event AND clock = '1') THEN
-            IF (reset = '0') THEN
-                S_mantissa_expo_A <= (OTHERS => '0');
-                S_mantissa_expo_B <= (OTHERS => '0');
-                S_exponent_expo_A <= (OTHERS => '0');
-                S_exponent_expo_B <= (OTHERS => '0');
-                S_mantissa_adder_A <= (OTHERS => '0');
-                S_mantissa_adder_result <= (OTHERS => '0');
-                S_mantissa_expo_result <= (OTHERS => '0');
-                S_exponent_expo_result <= (OTHERS => '0');
-                S_sign_result <= '0';
-                S_result <= (OTHERS => '0');
+            IF (reset = '1') THEN
+                S_Reg_I_A <= (others <= '0');
+                S_Reg_I_B <= (others <= '0');
+                S_Reg_Result <= (others <= '0');
             ELSE
-                S_mantissa_expo_A <= I_A(30 DOWNTO 8);
-                S_mantissa_expo_B <= I_B(30 DOWNTO 8);
-                S_exponent_expo_A <= I_A(7 DOWNTO 0);
-                S_exponent_expo_B <= I_B(7 DOWNTO 0);
-                S_mantissa_adder_A <= I_A(30 DOWNTO 8);
+                S_Reg_I_A <= I_A;
+                S_Reg_I_B <= I_B;
+                S_Reg_Result <= C_Result;
             END IF;
         END IF;
     END PROCESS;
 
-    PROCESS (clock)
-    BEGIN
-        IF (clock'event AND clock = '1') THEN
-            I_result <= S_result;
-        END IF;
-    END PROCESS;
+    S_mantissa_expo_A <= S_Reg_I_A(22 DOWNTO 0);
+    S_mantissa_expo_B <= S_Reg_I_B(22 DOWNTO 0);
+
+    S_mantissa_expo_A <= S_Reg_I_A(31 DOWNTO 23);
+    S_mantissa_expo_B <= S_Reg_I_B(31 DOWNTO 23);
+    I_result <= S_result;
+      
 END behavior;
