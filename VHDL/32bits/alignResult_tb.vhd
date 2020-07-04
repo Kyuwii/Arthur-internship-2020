@@ -42,26 +42,46 @@ BEGIN
     TB : PROCESS
         VARIABLE write_line : line;
         VARIABLE buffer_space : CHARACTER;
+        VARIABLE read_line : line;
+        VARIABLE V_sign_result : std_logic;
+        VARIABLE V_mantissa_result : std_logic(22 DOWNTO 0);
+        VARIABLE V_exponent_result : std_logic(7 DOWNTO 0);
     BEGIN
-        S_sign_result <= '0';
-        S_mantissa_result <= "01001111111111111111111";
-        S_exponent_result <= "10000001";
+    
+        file_open(buffer_input, "inputsAlignResult.txt", read_mode);
+        file_open(buffer_output, "outputsAlignResult.txt", write_mode);
 
-        WAIT FOR 20 ns;
+        WHILE NOT endfile(buffer_input) LOOP
+            readline(buffer_input, read_line);
 
-        ASSERT(S_result = "01000001010011111111111111111110")
-        REPORT "test failed" SEVERITY error;
+            read(read_line, V_sign_result);
+            read(read_line, buffer_space);
 
-        file_open(buffer_output, "C:/eda/outputsAlignResult.txt", write_mode);
+            read(read_line, V_exponent_result);
+            read(read_line, buffer_space);
 
-        write(write_line, STRING'("Values"));
-        writeline(buffer_output, write_line);
+            read(read_line, V_mantissa_result);
+            read(read_line, buffer_space);
 
-        write(write_line, STRING'(" Result = "));
-        write(write_line, S_result);
+            WAIT FOR 20 ns;
 
-        writeline(buffer_output, write_line);
+            S_sign_result <= V_sign_result;
+            S_mantissa_result <= V_mantissa_result;
+            S_exponent_result <= V_exponent_result;
 
+            WAIT FOR 20 ns;
+
+            
+            write(write_line, STRING'("Result = "));
+            write(write_line, S_result);
+
+            writeline(buffer_output, write_line);
+
+            WAIT FOR 20 ns;
+
+        END LOOP;
+
+        file_close(buffer_input);
         file_close(buffer_output);
 
         WAIT FOR 20 ns;
