@@ -3,7 +3,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 USE ieee.std_logic_signed.ALL;
 
-ENTITY alignExpo IS
+ENTITY alignExpo16bits IS
     GENERIC (n : INTEGER := 10);
     PORT (
         C_mantissa_expo_A : IN std_logic_vector(9 DOWNTO 0);
@@ -13,9 +13,9 @@ ENTITY alignExpo IS
         C_mantissa_expo_result : OUT std_logic_vector(9 DOWNTO 0);
         C_exponent_expo_result : OUT std_logic_vector(4 DOWNTO 0)
     );
-END alignExpo;
+END alignExpo16bits;
 
-ARCHITECTURE behavior OF alignExpo IS
+ARCHITECTURE behavior OF alignExpo16bits IS
     SIGNAL subtract : std_logic_vector(5 DOWNTO 0);
     SIGNAL zeros : std_logic_vector(9 DOWNTO 0);
     SIGNAL S_mantissa : std_logic_vector(9 DOWNTO 0);

@@ -7,28 +7,28 @@ USE ieee.std_logic_textio.ALL;
 LIBRARY std;
 USE std.textio.ALL;
 
-ENTITY subtractAdder_tb IS
-END subtractAdder_tb;
+ENTITY subtractAdder16bits_tb IS
+END subtractAdder16bits_tb;
 
-ARCHITECTURE tb OF subtractAdder_tb IS
+ARCHITECTURE tb OF subtractAdder16bits_tb IS
 
-    COMPONENT subtractAdder
-        GENERIC (n : INTEGER := 23);
+    COMPONENT subtractAdder16bits
+        GENERIC (n : INTEGER := 10);
         PORT (
             C_mantissa_adder_A : IN std_logic_vector(n - 1 DOWNTO 0);
             C_mantissa_adder_B : IN std_logic_vector(n - 1 DOWNTO 0);
             C_mantissa_adder_result : OUT std_logic_vector(n DOWNTO 0)
         );
     END COMPONENT;
-    SIGNAL S_mantissa_adder_A, S_mantissa_adder_B : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_mantissa_adder_A, S_mantissa_adder_B : std_logic_vector(9 DOWNTO 0);
+    SIGNAL S_mantissa_adder_result : std_logic_vector(10 DOWNTO 0);
 
     FILE buffer_input : text;
     FILE buffer_output : text;
 
 BEGIN
 
-    UTT : subtractAdder
+    UTT : subtractAdder16bits
     PORT MAP(
         C_mantissa_adder_A => S_mantissa_adder_A,
         C_mantissa_adder_B => S_mantissa_adder_B,
@@ -39,13 +39,13 @@ BEGIN
         VARIABLE write_line : line;
         VARIABLE buffer_space : CHARACTER;
         VARIABLE read_line : line;
-        
-        VARIABLE V_mantissa_adder_A, V_mantissa_adder_B : std_logic_vector(22 DOWNTO 0);
-        VARIABLE V_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+
+        VARIABLE V_mantissa_adder_A, V_mantissa_adder_B : std_logic_vector(9 DOWNTO 0);
+
     BEGIN
-    
-        file_open(buffer_input, "inputsSubtractAdder.txt", read_mode);
-        file_open(buffer_output, "outputsSubtractAdder.txt", write_mode);
+
+        file_open(buffer_input, "inputsSubtractAdder16bits.txt", read_mode);
+        file_open(buffer_output, "outputsSubtractAdder16bits.txt", write_mode);
 
         WHILE NOT endfile(buffer_input) LOOP
             readline(buffer_input, read_line);

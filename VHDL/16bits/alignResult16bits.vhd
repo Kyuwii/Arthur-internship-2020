@@ -3,7 +3,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 USE ieee.std_logic_signed.ALL;
 
-ENTITY alignResult IS
+ENTITY alignResult16bits IS
     GENERIC (n : INTEGER := 10);
     PORT (
         C_sign_result : IN std_logic;
@@ -11,9 +11,9 @@ ENTITY alignResult IS
         C_exponent_result : IN std_logic_vector(4 DOWNTO 0);
         C_result : OUT std_logic_vector(15 DOWNTO 0)
     );
-END alignResult;
+END alignResult16bits;
 
-ARCHITECTURE behavior OF alignResult IS
+ARCHITECTURE behavior OF alignResult16bits IS
     SIGNAL S_mantissa_result : std_logic_vector(9 DOWNTO 0);
     SIGNAL S_exponent_result : std_logic_vector(4 DOWNTO 0);
     SIGNAL zeros : std_logic_vector(9 DOWNTO 0);

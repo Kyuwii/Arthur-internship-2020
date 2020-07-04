@@ -1,0 +1,1 @@
+Exponent = 10010 Mantissa = 0100100101
