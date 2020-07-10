@@ -16,13 +16,12 @@ ENTITY alignExpo IS
 END alignExpo;
 
 ARCHITECTURE behavior OF alignExpo IS
-    SIGNAL one : std_logic_vector(7 DOWNTO 0);
     SIGNAL subtract : std_logic_vector(8 DOWNTO 0);
     SIGNAL zeros : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_mantissa : std_logic_vector(22 DOWNTO 0);
 BEGIN
     zeros <= "00000000000000000000000";
-    one <= "00000001";
+ 
 
     subtract <= (C_exponent_expo_B(7) & C_exponent_expo_B) - (C_exponent_expo_A(7) & C_exponent_expo_A) WHEN to_integer(unsigned(C_exponent_expo_A)) < to_integer(unsigned(C_exponent_expo_B)) ELSE
         (C_exponent_expo_A(7) & C_exponent_expo_A) - (C_exponent_expo_B(7) & C_exponent_expo_B);
