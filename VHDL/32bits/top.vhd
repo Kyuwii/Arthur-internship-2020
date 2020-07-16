@@ -52,16 +52,15 @@ ARCHITECTURE behavior OF top IS
     SIGNAL S_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
     SIGNAL S_mantissa_expo_result : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_result : std_logic_vector(7 DOWNTO 0);
-    SIGNAL S_sign_result : std_logic;
     SIGNAL S_Reg_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL S_result : std_logic_vector(31 DOWNTO 0);
-	 SIGNAL S_Final_A : std_logic_vector(22 DOWNTO 0);
-	 SIGNAL S_Final_B : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_Final_A : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_Final_B : std_logic_vector(22 DOWNTO 0);
 
 BEGIN
 
     algExp : alignExpo
-    GENERIC MAP (
+    GENERIC MAP(
         n => 23
     )
     PORT MAP(
@@ -74,7 +73,7 @@ BEGIN
     );
 
     subAdd : subtractAdder
-    GENERIC MAP (
+    GENERIC MAP(
         n => 23
     )
     PORT MAP(
@@ -84,12 +83,12 @@ BEGIN
     );
 
     algRes : alignResult
-    GENERIC MAP (
+    GENERIC MAP(
         n => 23
     )
     PORT MAP(
-        C_sign_result => S_sign_result,
-        C_mantissa_result => S_mantissa_adder_result(22 DoWNTO 0),
+        C_sign_result => S_mantissa_adder_result(22),
+        C_mantissa_result => S_mantissa_adder_result(22 DOWNTO 0),
         C_exponent_result => S_exponent_expo_result,
         C_result => S_result
     );
@@ -97,29 +96,27 @@ BEGIN
     PROCESS (reset, clock)
     BEGIN
         IF (reset = '1') THEN
-            S_Reg_Input_A <= (others => '0');
-            S_Reg_Input_B <= (others => '0');
-            S_Reg_Result <= (others => '0');
+            S_Reg_Input_A <= (OTHERS => '0');
+            S_Reg_Input_B <= (OTHERS => '0');
+            S_Reg_Result <= (OTHERS => '0');
         ELSIF (clock'event AND clock = '1') THEN
             S_Reg_Input_A <= I_A;
             S_Reg_Input_B <= I_B;
             S_Reg_Result <= S_Result;
         END IF;
     END PROCESS;
-	 
+
     S_mantissa_expo_A <= S_Reg_Input_A(22 DOWNTO 0);
     S_mantissa_expo_B <= S_Reg_Input_B(22 DOWNTO 0);
 
     S_exponent_expo_A <= S_Reg_Input_A(30 DOWNTO 23);
     S_exponent_expo_B <= S_Reg_Input_B(30 DOWNTO 23);
-	 
-	 S_Final_A <= S_mantissa_expo_A WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
-					S_mantissa_expo_B;
-	 S_Final_B <= S_mantissa_expo_B WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
-					S_mantissa_expo_A;
 
-	 S_sign_result <= S_Reg_Input_A(31);
-    
+    S_Final_A <= S_mantissa_expo_A WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
+        S_mantissa_expo_B;
+    S_Final_B <= S_mantissa_expo_B WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
+        S_mantissa_expo_A;
+
     I_result <= S_Reg_result;
     bool <= S_Reg_result(31);
 
