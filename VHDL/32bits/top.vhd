@@ -19,7 +19,7 @@ ARCHITECTURE behavior OF top IS
         PORT (
             C_mantissa_adder_A : IN std_logic_vector(n - 1 DOWNTO 0);
             C_mantissa_adder_B : IN std_logic_vector(n - 1 DOWNTO 0);
-            C_mantissa_adder_result : OUT std_logic_vector(n DOWNTO 0)
+            C_mantissa_adder_result : OUT std_logic_vector(n - 1 DOWNTO 0)
         );
     END COMPONENT;
 
@@ -49,13 +49,14 @@ ARCHITECTURE behavior OF top IS
     SIGNAL S_mantissa_expo_A, S_mantissa_expo_B : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_A, S_exponent_expo_B : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_mantissa_adder_A : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_mantissa_adder_result : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_mantissa_expo_result : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_result : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_Reg_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL S_result : std_logic_vector(31 DOWNTO 0);
-    SIGNAL S_Final_A : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_Final_B : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_Final_A : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_Final_B : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_sign : std_logic;
 
 BEGIN
 
@@ -74,7 +75,7 @@ BEGIN
 
     subAdd : subtractAdder
     GENERIC MAP(
-        n => 23
+        n => 24
     )
     PORT MAP(
         C_mantissa_adder_A => S_Final_A,
@@ -84,11 +85,11 @@ BEGIN
 
     algRes : alignResult
     GENERIC MAP(
-        n => 23
+        n => 24
     )
     PORT MAP(
-        C_sign_result => S_mantissa_adder_result(22),
-        C_mantissa_result => S_mantissa_adder_result(22 DOWNTO 0),
+        C_sign_result => S_sign,
+        C_mantissa_result => S_mantissa_adder_result,
         C_exponent_result => S_exponent_expo_result,
         C_result => S_result
     );
@@ -112,10 +113,13 @@ BEGIN
     S_exponent_expo_A <= S_Reg_Input_A(30 DOWNTO 23);
     S_exponent_expo_B <= S_Reg_Input_B(30 DOWNTO 23);
 
-    S_Final_A <= S_mantissa_expo_A WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
-        S_mantissa_expo_B;
-    S_Final_B <= S_mantissa_expo_B WHEN S_mantissa_expo_A > S_mantissa_expo_B ELSE
+    S_Final_A <= '1' & S_mantissa_expo_A WHEN S_exponent_expo_A > S_exponent_expo_B ELSE
+        '1' & S_mantissa_expo_B;
+    S_Final_B <= S_mantissa_expo_B WHEN S_exponent_expo_A > S_exponent_expo_B ELSE
         S_mantissa_expo_A;
+
+    S_sign <= '0' WHEN S_exponent_expo_A > S_exponent_expo_B else
+        '1';
 
     I_result <= S_Reg_result;
     bool <= S_Reg_result(31);

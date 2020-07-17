@@ -17,11 +17,11 @@ ARCHITECTURE tb OF subtractAdder_tb IS
         PORT (
             C_mantissa_adder_A : IN std_logic_vector(n - 1 DOWNTO 0);
             C_mantissa_adder_B : IN std_logic_vector(n - 1 DOWNTO 0);
-            C_mantissa_adder_result : OUT std_logic_vector(n DOWNTO 0)
+            C_mantissa_adder_result : OUT std_logic_vector(n - 1 DOWNTO 0)
         );
     END COMPONENT;
     SIGNAL S_mantissa_adder_A, S_mantissa_adder_B : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_mantissa_adder_result : std_logic_vector(22 DOWNTO 0);
 
     FILE buffer_input : text;
     FILE buffer_output : text;
@@ -41,7 +41,7 @@ BEGIN
         VARIABLE read_line : line;
         
         VARIABLE V_mantissa_adder_A, V_mantissa_adder_B : std_logic_vector(22 DOWNTO 0);
-        VARIABLE V_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+        VARIABLE V_mantissa_adder_result : std_logic_vector(22 DOWNTO 0);
     BEGIN
     
         file_open(buffer_input, "inputsSubtractAdder.txt", read_mode);

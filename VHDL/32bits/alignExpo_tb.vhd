@@ -19,7 +19,8 @@ ARCHITECTURE tb OF alignExpo_tb IS
             C_exponent_expo_A : IN std_logic_vector(7 DOWNTO 0);
             C_exponent_expo_B : IN std_logic_vector(7 DOWNTO 0);
             C_mantissa_expo_result : OUT std_logic_vector(22 DOWNTO 0);
-            C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0)
+            C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0);
+            C_subtract : OUT std_logic_vector(8 DOWNTO 0)
         );
     END COMPONENT;
 
@@ -27,6 +28,7 @@ ARCHITECTURE tb OF alignExpo_tb IS
     SIGNAL S_exponent_expo_A, S_exponent_expo_B : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_mantissa_expo_result : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_result : std_logic_vector(7 DOWNTO 0);
+    SIGNAL S_subtract : std_logic_vector(8 DOWNTO 0);
 
     FILE buffer_input : text;
     FILE buffer_output : text;
@@ -40,7 +42,8 @@ BEGIN
         C_exponent_expo_A => S_exponent_expo_A,
         C_exponent_expo_B => S_exponent_expo_B,
         C_mantissa_expo_result => S_mantissa_expo_result,
-        C_exponent_expo_result => S_exponent_expo_result 
+        C_exponent_expo_result => S_exponent_expo_result,
+        C_subtract => S_subtract
     );
 
     TB : PROCESS
@@ -84,6 +87,9 @@ BEGIN
 
             write(write_line, STRING'(" Exponent = "));
             write(write_line, S_exponent_expo_result);
+
+            write(write_line, STRING'(" Subtract = "));
+            write(write_line, S_subtract);
 
             writeline(buffer_output, write_line);
 
