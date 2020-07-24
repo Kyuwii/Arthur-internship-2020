@@ -1,7 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
-USE ieee.std_logic_signed.ALL;
+USE ieee.std_logic_unsigned.ALL;
 
 ENTITY subtractAdder IS
     GENERIC (n : INTEGER := 24);

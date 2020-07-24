@@ -12,21 +12,20 @@ END alignExpo_tb;
 
 ARCHITECTURE tb OF alignExpo_tb IS
     COMPONENT alignExpo
-        GENERIC (n : INTEGER := 23);
+        GENERIC (n : INTEGER := 24);
         PORT (
-            C_mantissa_expo_A : IN std_logic_vector(22 DOWNTO 0);
-            C_mantissa_expo_B : IN std_logic_vector(22 DOWNTO 0);
+            C_mantissa_expo_B : IN std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_expo_A : IN std_logic_vector(7 DOWNTO 0);
             C_exponent_expo_B : IN std_logic_vector(7 DOWNTO 0);
-            C_mantissa_expo_result : OUT std_logic_vector(22 DOWNTO 0);
+            C_mantissa_expo_result : OUT std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0);
             C_subtract : OUT std_logic_vector(8 DOWNTO 0)
         );
     END COMPONENT;
 
-    SIGNAL S_mantissa_expo_A, S_mantissa_expo_B : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_mantissa_expo_A, S_mantissa_expo_B : std_logic_vector(23 DOWNTO 0);
     SIGNAL S_exponent_expo_A, S_exponent_expo_B : std_logic_vector(7 DOWNTO 0);
-    SIGNAL S_mantissa_expo_result : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_mantissa_expo_result : std_logic_vector(23 DOWNTO 0);
     SIGNAL S_exponent_expo_result : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_subtract : std_logic_vector(8 DOWNTO 0);
 
@@ -37,7 +36,6 @@ BEGIN
 
     UTT : alignExpo
     PORT MAP(
-        C_mantissa_expo_A => S_mantissa_expo_A,
         C_mantissa_expo_B => S_mantissa_expo_B,
         C_exponent_expo_A => S_exponent_expo_A,
         C_exponent_expo_B => S_exponent_expo_B,

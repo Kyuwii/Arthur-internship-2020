@@ -15,7 +15,7 @@ END top;
 
 ARCHITECTURE behavior OF top IS
     COMPONENT subtractAdder
-        GENERIC (n : INTEGER := 23);
+        GENERIC (n : INTEGER := 24);
         PORT (
             C_mantissa_adder_A : IN std_logic_vector(n - 1 DOWNTO 0);
             C_mantissa_adder_B : IN std_logic_vector(n - 1 DOWNTO 0);
@@ -24,13 +24,12 @@ ARCHITECTURE behavior OF top IS
     END COMPONENT;
 
     COMPONENT alignExpo
-        GENERIC (n : INTEGER := 23);
+        GENERIC (n : INTEGER := 24);
         PORT (
-            C_mantissa_expo_A : IN std_logic_vector(22 DOWNTO 0);
-            C_mantissa_expo_B : IN std_logic_vector(22 DOWNTO 0);
+            C_mantissa_expo_B : IN std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_expo_A : IN std_logic_vector(7 DOWNTO 0);
             C_exponent_expo_B : IN std_logic_vector(7 DOWNTO 0);
-            C_mantissa_expo_result : OUT std_logic_vector(22 DOWNTO 0);
+            C_mantissa_expo_result : OUT std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_expo_result : OUT std_logic_vector(7 DOWNTO 0)
         );
     END COMPONENT;
@@ -39,7 +38,7 @@ ARCHITECTURE behavior OF top IS
         GENERIC (n : INTEGER := 23);
         PORT (
             C_sign_result : IN std_logic;
-            C_mantissa_result : IN std_logic_vector(22 DOWNTO 0);
+            C_mantissa_result : IN std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_result : IN std_logic_vector(7 DOWNTO 0);
             C_result : OUT std_logic_vector(31 DOWNTO 0)
         );
@@ -48,9 +47,9 @@ ARCHITECTURE behavior OF top IS
     SIGNAL S_Reg_Input_A, S_Reg_Input_B : std_logic_vector(31 DOWNTO 0);
     SIGNAL S_mantissa_expo_A, S_mantissa_expo_B : std_logic_vector(22 DOWNTO 0);
     SIGNAL S_exponent_expo_A, S_exponent_expo_B : std_logic_vector(7 DOWNTO 0);
-    SIGNAL S_mantissa_adder_A : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_mantissa_adder_result : std_logic_vector(22 DOWNTO 0);
-    SIGNAL S_mantissa_expo_result : std_logic_vector(22 DOWNTO 0);
+    SIGNAL S_mantissa_adder_A : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_mantissa_adder_result : std_logic_vector(23 DOWNTO 0);
+    SIGNAL S_mantissa_expo_result : std_logic_vector(23 DOWNTO 0);
     SIGNAL S_exponent_expo_result : std_logic_vector(7 DOWNTO 0);
     SIGNAL S_Reg_result : std_logic_vector(31 DOWNTO 0);
     SIGNAL S_result : std_logic_vector(31 DOWNTO 0);
@@ -62,10 +61,9 @@ BEGIN
 
     algExp : alignExpo
     GENERIC MAP(
-        n => 23
+        n => 24
     )
     PORT MAP(
-        C_mantissa_expo_A => S_Final_A,
         C_mantissa_expo_B => S_Final_B,
         C_exponent_expo_A => S_exponent_expo_A,
         C_exponent_expo_B => S_exponent_expo_B,
@@ -89,7 +87,7 @@ BEGIN
     )
     PORT MAP(
         C_sign_result => S_sign,
-        C_mantissa_result => S_mantissa_adder_result,
+        C_mantissa_result => S_mantissa_adder_result,  
         C_exponent_result => S_exponent_expo_result,
         C_result => S_result
     );
@@ -115,8 +113,8 @@ BEGIN
 
     S_Final_A <= '1' & S_mantissa_expo_A WHEN S_exponent_expo_A > S_exponent_expo_B ELSE
         '1' & S_mantissa_expo_B;
-    S_Final_B <= S_mantissa_expo_B WHEN S_exponent_expo_A > S_exponent_expo_B ELSE
-        S_mantissa_expo_A;
+    S_Final_B <= '1' & S_mantissa_expo_B WHEN S_exponent_expo_A > S_exponent_expo_B ELSE
+        '1' & S_mantissa_expo_A;
 
     S_sign <= '0' WHEN S_exponent_expo_A > S_exponent_expo_B else
         '1';
