@@ -1,0 +1,57 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+s       e              m
+1   100010101  10101110101001101010100
+31  30      23 22                    0
+
+
+Number_A(31)  Number_B(31)  D
+0               0           0
+0               1           1 
+1               0           1
+1               1           0
+
+Number_B(31)    D   A
+0               0   0
+0               1   0
+1               0   0
+1               1   1
+
+Number_A(31) Number_B(31)   D   A
+0               0           0   0
+0               1           1   1
+1               0           1   0
+1               1           0   0
+
+
+Si Number_A >= Number_B Alors A = 1
+Cas  0 0 Alors A = 0
+Cas  1 1 Alors A = 0
+Cas  1 0 Alors A = 0
+Cas  0 1 Alors A = 1
+
+
+Exponent_A - Exponent_B = Subtract => B
+Si Exponent_A > Exponent_B Alors Subtract > 0 IsZero != 0 Alors B = 1 Dans ce cas Alors SubtractionExponent(7) = 0
+Si Exponent_A < Exponent_B Alors Subtract < 0 IsZero != 0 Alors B = 0 Dans ce cas Alors SubtractionExponent(7) = 1
+Si Exponent_A = Exponent_B Alors Subtract = 0 IsZero = 0  Alors B = 0
+
+B => 1 and not 0 = 1 => 1  --cas 1 A > B
+B => 1 and not 1 = 0 => 0  --cas 2 A < B
+B => 0 and not 0 = 1 => 0  --cas 3 A = 0
+
+Dans le cas equal mantissa alors C => 1 Car A >= B True
+
+

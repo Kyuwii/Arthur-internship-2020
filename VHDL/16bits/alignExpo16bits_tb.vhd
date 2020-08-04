@@ -12,14 +12,14 @@ END alignExpo16bits_tb;
 
 ARCHITECTURE tb OF alignExpo16bits_tb IS
     COMPONENT alignExpo16bits
-        GENERIC (n : INTEGER := 10);
+        GENERIC (n : INTEGER := 11);
         PORT (
-            C_mantissa_expo_A : IN std_logic_vector(9 DOWNTO 0);
-            C_mantissa_expo_B : IN std_logic_vector(9 DOWNTO 0);
+            C_mantissa_expo_B : IN std_logic_vector(n - 1 DOWNTO 0);
             C_exponent_expo_A : IN std_logic_vector(4 DOWNTO 0);
             C_exponent_expo_B : IN std_logic_vector(4 DOWNTO 0);
-            C_mantissa_expo_result : OUT std_logic_vector(9 DOWNTO 0);
-            C_exponent_expo_result : OUT std_logic_vector(4 DOWNTO 0)
+            C_mantissa_expo_result : OUT std_logic_vector(n - 1 DOWNTO 0);
+            C_exponent_expo_result : OUT std_logic_vector(4 DOWNTO 0);
+            C_subtract : OUT std_logic_vector(5 DOWNTO 0)
         );
     END COMPONENT;
 
@@ -79,7 +79,7 @@ BEGIN
 
             write(write_line, STRING'("Exponent = "));
             write(write_line, S_exponent_expo_result);
-            
+
             write(write_line, STRING'(" Mantissa = "));
             write(write_line, S_mantissa_expo_result);
 
