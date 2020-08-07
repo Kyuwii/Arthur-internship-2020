@@ -38,8 +38,7 @@ BEGIN
 
     --Subtract the mantissas
     SubtractionMantissa <= ('0' & Number_A(m - 1 DOWNTO 0)) - ('0' & Number_B(m - 1 DOWNTO 0));
-    --IsMantissaNull <= SubtractionMantissa(0) OR SubtractionMantissa(1);
-
+   
     C <= (NOT SubtractionMantissa(m));
 
     AGreaterThanB <= A OR B OR C;
