@@ -62,6 +62,11 @@ BEGIN
 
     BEGIN
 
+      
+        S_Reset <= '1';
+        WAIT FOR 20 ns;
+        S_Reset <= '0';
+
         file_open(buffer_input, "inputsComparison.txt", read_mode);
         file_open(buffer_output, "outputsComparison.txt", write_mode);
 
@@ -73,25 +78,29 @@ BEGIN
             read(read_line, buffer_space);
             read(read_line, I_Number_B);
 
-            WAIT FOR 20 ns;
-
             S_Number_A <= I_Number_A;
             S_Number_B <= I_Number_B;
-
-            S_Clk <= '1';
-            S_Reset <= '0';
 
             WAIT FOR 20 ns;
 
             write(write_line, S_AGreaterThanB);
             writeline(buffer_output, write_line);
 
-            WAIT FOR 20 ns;
-
         END LOOP;
 
         file_close(buffer_input);
         file_close(buffer_output);
+
+    END PROCESS;
+
+    CLOCK : PROCESS
+
+    BEGIN
+
+        S_Clk <= '0';
+        WAIT FOR 20 ns;
+        S_Clk <= '1';
+        WAIT FOR 20 ns;
 
     END PROCESS;
 

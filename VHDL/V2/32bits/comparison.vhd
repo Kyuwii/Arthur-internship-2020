@@ -1,7 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
-USE ieee.std_logic_signed.ALL;
+USE ieee.std_logic_unsigned.ALL;
 
 ENTITY comparison IS
     GENERIC (
@@ -14,7 +14,7 @@ ENTITY comparison IS
         Number_B : IN std_logic_vector(n - 1 DOWNTO 0);
         Clk : IN std_logic;
         Reset : IN std_logic;
-        AGreaterThanB : OUT std_logic 
+        AGreaterThanB : OUT std_logic
     );
 END comparison;
 
@@ -31,16 +31,14 @@ BEGIN
     --A = 1 if Number_A(n - 1) = 0 AND Number_B(n - 1) = 1
 
     --Subtract the exponents 
-    SubtractionExponent <= ('0' & Number_A(n - 2 DOWNTO n - 1 - e)) -  ('0' & Number_B(n - 2 DOWNTO n - 1 - e));
-    IsExponentNull <= SubtractionExponent(0) OR SubtractionExponent(1) OR SubtractionExponent(2) OR SubtractionExponent(3) OR SubtractionExponent(4) OR SubtractionExponent(5) OR SubtractionExponent(6) OR SubtractionExponent(7);
-    --Test is the subtraction is equal to 0
-    B <= IsExponentNull AND (NOT SubtractionExponent(e));
-
+    B <= '1' WHEN Number_A(n - 2 DOWNTO n - 1 - e) >= Number_B(n - 2 DOWNTO n - 1 - e) ELSE
+        '0';
+    IsExponentNull <= '1' WHEN (Number_A(n - 2 DOWNTO n - 1 - e) = Number_B(n - 2 DOWNTO n - 1 - e)) ELSE 
+        '0';
+    
     --Subtract the mantissas
-    SubtractionMantissa <= ('0' & Number_A(m - 1 DOWNTO 0)) - ('0' & Number_B(m - 1 DOWNTO 0));
-   
-    C <= (NOT SubtractionMantissa(m));
-
-    AGreaterThanB <= A OR B OR C;
+    C <= '1' WHEN Number_A(n - 2 - e DOWNTO 0) >= Number_B(n - 2 - e DOWNTO 0) ELSE
+        '0';
+    AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
 
 END behavior;
