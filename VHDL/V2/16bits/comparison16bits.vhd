@@ -19,6 +19,8 @@ ENTITY comparison16bits IS
 END comparison16bits;
 
 ARCHITECTURE behavior OF comparison16bits IS
+    SIGNAL S_Number_A, S_Number_B : std_logic_vector(n - 1 DOWNTO 0);
+    SIGNAL S_AGreaterThanB : std_logic;
     SIGNAL A, B, C : std_logic;
     SIGNAL D, IsExponentNull, IsMantissaNull : std_logic;
     SIGNAL SubtractionExponent : std_logic_vector(e DOWNTO 0);
@@ -26,19 +28,33 @@ ARCHITECTURE behavior OF comparison16bits IS
 BEGIN
 
     --Test if the sign bits are equal 
-    D <= Number_A(n - 1) XOR Number_B(n - 1);
-    A <= Number_B(n - 1) AND D;
+    D <= S_Number_A(n - 1) XOR S_Number_B(n - 1);
+    A <= S_Number_B(n - 1) AND D;
     --A = 1 if Number_A(n - 1) = 0 AND Number_B(n - 1) = 1
 
     --Subtract the exponents 
-    B <= '1' WHEN Number_A(n - 2 DOWNTO n - 1 - e) >= Number_B(n - 2 DOWNTO n - 1 - e) ELSE
+    B <= '1' WHEN S_Number_A(n - 2 DOWNTO n - 1 - e) >= S_Number_B(n - 2 DOWNTO n - 1 - e) ELSE
         '0';
-    IsExponentNull <= '1' WHEN (Number_A(n - 2 DOWNTO n - 1 - e) = Number_B(n - 2 DOWNTO n - 1 - e)) ELSE 
+    IsExponentNull <= '1' WHEN (S_Number_A(n - 2 DOWNTO n - 1 - e) = S_Number_B(n - 2 DOWNTO n - 1 - e)) ELSE 
         '0';
     
     --Subtract the mantissas
-    C <= '1' WHEN Number_A(n - 2 - e DOWNTO 0) >= Number_B(n - 2 - e DOWNTO 0) ELSE
+    C <= '1' WHEN S_Number_A(n - 2 - e DOWNTO 0) >= S_Number_B(n - 2 - e DOWNTO 0) ELSE
         '0';
-    AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
+    S_AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
+
+    PROCESS(Clk, reset)
+        --add register with clock
+        BEGIN
+            IF (reset = '1') THEN
+                S_Number_A <= (others => '0');
+                S_Number_B <= (others => '0');
+            ELSIF (Clk'event AND Clk = '1') THEN
+                S_Number_A <= Number_A;
+                S_Number_B <= Number_B;
+                AGreaterThanB <= S_AGreaterThanB;
+            END IF;
+
+    END PROCESS;
 
 END behavior;

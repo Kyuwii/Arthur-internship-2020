@@ -19,6 +19,8 @@ ENTITY comparison IS
 END comparison;
 
 ARCHITECTURE behavior OF comparison IS
+    SIGNAL S_Number_A, S_Number_B : std_logic_vector(n - 1 DOWNTO 0);
+    SIGNAL S_AGreaterThanB : std_logic;
     SIGNAL A, B, C : std_logic;
     SIGNAL D, IsExponentNull, IsMantissaNull : std_logic;
     SIGNAL SubtractionExponent : std_logic_vector(e DOWNTO 0);
@@ -40,5 +42,19 @@ BEGIN
     C <= '1' WHEN Number_A(n - 2 - e DOWNTO 0) >= Number_B(n - 2 - e DOWNTO 0) ELSE
         '0';
     AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
+
+    PROCESS(Clk, reset)
+        --add register with clock
+        BEGIN
+            IF (reset = '1') THEN
+                S_Number_A <= (others => '0');
+                S_Number_B <= (others => '0');
+            ELSIF (Clk'event AND Clk = '1') THEN
+                S_Number_A <= Number_A;
+                S_Number_B <= Number_B;
+                AGreaterThanB <= S_AGreaterThanB;
+            END IF;
+
+    END PROCESS;
 
 END behavior;
