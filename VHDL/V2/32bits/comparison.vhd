@@ -28,20 +28,20 @@ ARCHITECTURE behavior OF comparison IS
 BEGIN
 
     --Test if the sign bits are equal 
-    D <= Number_A(n - 1) XOR Number_B(n - 1);
-    A <= Number_B(n - 1) AND D;
+    D <= S_Number_A(n - 1) XOR S_Number_B(n - 1);
+    A <= S_Number_B(n - 1) AND D;
     --A = 1 if Number_A(n - 1) = 0 AND Number_B(n - 1) = 1
 
     --Subtract the exponents 
-    B <= '1' WHEN Number_A(n - 2 DOWNTO n - 1 - e) >= Number_B(n - 2 DOWNTO n - 1 - e) ELSE
+    B <= '1' WHEN S_Number_A(n - 2 DOWNTO n - 1 - e) >= S_Number_B(n - 2 DOWNTO n - 1 - e) ELSE
         '0';
-    IsExponentNull <= '1' WHEN (Number_A(n - 2 DOWNTO n - 1 - e) = Number_B(n - 2 DOWNTO n - 1 - e)) ELSE 
+    IsExponentNull <= '1' WHEN (S_Number_A(n - 2 DOWNTO n - 1 - e) = S_Number_B(n - 2 DOWNTO n - 1 - e)) ELSE 
         '0';
     
     --Subtract the mantissas
-    C <= '1' WHEN Number_A(n - 2 - e DOWNTO 0) >= Number_B(n - 2 - e DOWNTO 0) ELSE
+    C <= '1' WHEN S_Number_A(n - 2 - e DOWNTO 0) >= S_Number_B(n - 2 - e DOWNTO 0) ELSE
         '0';
-    AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
+    S_AGreaterThanB <= A OR (B AND (NOT A)) OR (C AND IsExponentNull);
 
     PROCESS(Clk, reset)
         --add register with clock
